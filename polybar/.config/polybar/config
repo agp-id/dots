@@ -1,0 +1,25 @@
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+[margin]
+for-modules = 1
+
+[settings]
+;https://github.com/jaagr/polybar/wiki/Configuration#application-settings
+throttle-output = 5
+throttle-output-for = 10
+screenchange-reload = true
+compositing-background = over
+compositing-foreground = over
+compositing-overline = over
+compositing-underline = over
+compositing-border = over
+;===========================
+
+;file include
+include-file = $HOME/.config/polybar/colors
+include-file = $HOME/.config/polybar/bars
+include-file = $HOME/.config/polybar/fonts
+include-file = $HOME/.config/polybar/modules
+;=============

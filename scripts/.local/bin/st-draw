@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+
+# Draw a floating terminal in bspwm
+# --terminal must suport geometry flag--
+# Thanks addy-pambudi (Inspired by u/f0x52)
+
+# Draw a rectangle using slop then read the geometry value
+read -r X Y W H < <(slop -f "%x %y %w %h" -b 4 -t 0 -q)
+
+# Depends on font width & height
+(( W /= 7 ))
+(( H /= 15 ))
+
+# Minimal size
+[ "$W" -lt 15 ] && W=15
+
+# Create a variable to be used for terminal flag option
+g=${W}x${H}+${X}+${Y}
+
+# Remove current terminal rules
+bspc rule -r st-256color
+
+# Draw with floating rule
+bspc rule -a st-256color -o state=floating follow=on focus=on
+st -g $g &
+
+# Restore the rule
+bspc rule -a st-256color state=tiled follow=on focus=on

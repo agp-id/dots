@@ -1,0 +1,12 @@
+[colors]
+
+background = #e10e111c
+background-alt = #9d0b112a
+foreground = #ceccdc
+foreground-alt = ${xrdb:color4:#222}
+
+blue = #3a2efc
+red = #FF5252
+yellow = #C9BC0E
+green = #1aec32
+

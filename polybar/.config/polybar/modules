@@ -1,0 +1,230 @@
+[module/alsa]
+type = internal/alsa
+
+format-volume-margin = 0
+format-volume = <ramp-volume><label-volume>
+label-volume = %percentage:3:3%%
+format-volume-foreground = ${colors.foreground}
+format-volume-background = ${colors.background}
+format-volume-padding = 0
+use-ui-max = false
+interval = 5
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+ramp-volume-4 = 
+
+label-muted = "%{F#FF5252} %percentage:3:3%%"
+label-muted-background = ${colors.background}
+label-muted-padding = 0
+;========================
+
+[module/bspwm]
+type = internal/bspwm
+
+enable-click = true
+enable-scroll = true
+reverse-scroll = true
+pin-workspaces = true
+
+ws-icon-0 = 1;
+ws-icon-1 = 2;
+ws-icon-2 = 3;%{T6}%{T-}
+ws-icon-3 = 4;
+ws-icon-4 = 5;
+ws-icon-5 = 6;
+ws-icon-6 = 7;
+ws-icon-7 = 8;
+ws-icon-8 = 9;
+ws-icon-9 = 10;
+ws-icon-default = " "
+
+
+;format = <label-state> <label-mode>
+
+label-focused =%icon%
+label-focused-background = ${colors.background-alt}
+;label-focused-underline =
+label-focused-padding = 2
+label-focused-foreground = ${colors.green}
+
+label-occupied = %icon%%{T7}%{F#1aec32}%{F-}%{T-}
+label-occupied-padding = 1
+label-occupied-background = ${colors.background}
+label-occupied-foreground = ${colors.foreground}
+
+label-urgent = %icon%
+label-urgent-padding = 3
+
+label-empty = %icon%
+label-empty-foreground = ${colors.foreground}
+label-empty-padding = 2
+label-empty-background = ${colors.background}
+
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+;==================
+
+[module/cpu]
+type = internal/cpu
+
+interval = 1
+format = <label>
+label =  %percentage%%
+;=========================
+
+[module/date]
+type = internal/date
+interval = 5
+date = %{T8}%d%{T-} %B
+date-alt = "%d-%m-%Y"
+time = %{T8}%I:%M%{T-} %P
+time-alt = %H:%M
+format-foreground = ${colors.foreground}
+format-background = ${colors.background}
+label = %time%   %{F#c79814}%{T6}  %{T-}%{F-}%date%
+;===================
+
+[module/filesystem]
+type = internal/fs
+
+; Mountpoints to display
+mount-0 = /
+interval = 30
+fixed-values = false
+
+spacing = 4
+
+format-mounted = <label-mounted>
+format-mounted-foreground = ${colors.foreground}
+format-mounted-background = ${colors.background}
+format-mounted-underline =
+;label-mounted = %{T6}%{T-} %percentage_free%%
+label-mounted = %{T6}%{T-} %used% / %free%
+
+label-unmounted = %{T6}  not mounted
+format-unmounted-foreground = ${colors.foreground}
+format-unmounted-background = ${colors.background}
+;=======================
+
+[module/memory1]
+type = internal/memory
+
+interval = 2
+
+format = "<label>"
+label =  %percentage_used%%
+
+;=======================
+[module/mpd]
+type = internal/mpd
+
+interval = 1
+
+format-online = <icon-prev> <toggle> <icon-next> <icon-random> <label-song>
+format-online-prefix = "     "
+;format-offline = <label-offline>
+;format-offline-prefix = off
+
+label-song =  " %title%"
+label-song-maxlen = 25
+label-song-ellipsis = true
+label-time = %elapsed% / %total%
+
+label-offline = " Offline"
+
+icon-play = "    "
+icon-pause = "    "
+icon-stop = 
+icon-next = 
+icon-prev = 
+icon-seekf = 
+icon-seekb = 
+icon-random = "    "
+icon-repeat = 
+icon-repeatone = 
+icon-single = 
+icon-consume =
+
+toggle-on-foreground = ${colors.red}
+toggle-off-foreground = ${colors.yellow}
+
+;==================
+
+[module/wlan]
+type = internal/network
+interface = wlp18s0
+
+format-connected =<label-connected>
+label-connected = %{T3}%upspeed:9:9%%{O-33}%{T2}%downspeed:9:9%
+
+format-connected-prefix = %{T6}
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+;========================
+
+[module/lan]
+type = internal/network
+interface = enp19s0
+
+format-connected =<label-connected>
+label-connected = %{T3}%upspeed:9:9%%{O-33}%{T2}%downspeed:9:9%
+
+format-connected-prefix = %{T6}
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+;========================
+
+[module/usblan]
+type = internal/network
+interface = enp0s29u1u1
+unknown-as-up = true
+
+format-connected =<label-connected>
+label-connected = %{T3}%upspeed:9:9%%{O-33}%{T2}%downspeed:9:9%
+
+format-connected-prefix = 
+format-connected-foreground = ${colors.foreground}
+format-connected-background = ${colors.background}
+;==========================================
+
+[module/temp]
+type = internal/temperature
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+
+; Thermal zone to use
+; To list all the zone types, run
+; $ for i in /sys/class/thermal/thermal_zone*; do echo "$i: $(<$i/type)"; done
+; Default: 0
+thermal-zone = 0
+
+; Full path of temperature sysfs path
+; Use `sensors` to find preferred temperature source, then run
+; $ for i in /sys/class/hwmon/hwmon*/temp*_input; do echo "$(<$(dirname $i)/name): $(cat ${i%_*}_label 2>/dev/null || echo $(basename ${i%_*})) $(readlink -f $i)"; done
+; to find path to desired file
+; Default reverts to thermal zone setting
+hwmon-path = /sys/devices/virtual/thermal/thermal_zone0/hwmon1/temp1_input
+
+base-temperature = 20
+warn-temperature = 65
+
+units = true
+
+format = <ramp> <label>
+format-warn = <ramp> <label-warn>
+
+label = %temperature-c%
+label-warn = %temperature-c%
+label-warn-foreground = ${colors.red}
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+ramp-0-foreground = ${colors.green}
+ramp-1-foreground = ${colors.yellow}
+ramp-2-foreground = ${colors.red}

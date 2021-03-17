@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+if
+   xdo id -N st-drop > /dev/null
+ then
+   bspc node "$(xdo id -N st-drop)" --flag hidden -f
+ else
+   st -c "st-drop" -g 195x18+-3+-3
+fi

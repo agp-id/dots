@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+if
+   xdo id -N cava-drop > /dev/null
+ then
+   xdo kill -N cava-drop
+ else
+   sleep 1 && bspc node -f $(xdo id -N st-drop) &
+   st -C "black@256" -A 0 -c "cava-drop" -g 198x39+-7+180 cava
+fi

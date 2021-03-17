@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+
+# cleanup wifi and restart iwd+dhcpcd
+if [ "$1" == "-c" ]; then
+  doas rsm restart iwd dhcpcd &> /dev/null
+elif [ "$1" != "" ]; then
+  echo -e "ERROR!\n\nUsage:
+  'connect-wifi'  connect to wifi
+  '-c'            restart iwd & dhcpcd, then connect"
+  exit
+fi
+
+# connect to wifi
+  CARD=$(ip link | grep -o 'wl.\w*')
+  for op in disconnect scan get-networks; do sleep 1 && iwctl station "$CARD" "$op"; done
+  printf "SSID to connect: "; read -r SSID
+  iwctl station "$CARD" connect "$SSID"
+  iwctl station "$CARD" show

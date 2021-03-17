@@ -1,0 +1,109 @@
+#!/usr/bin/env sh
+
+#Thanks to ALLAH SWT and https://github.com/Awan
+wid=$1
+class=$2
+instance=$3
+consequences=$4
+title=$(xdotool getwindowname $wid)
+
+
+case $class in
+  [Ff]eh|[Ff]ile-roller|[Gg]ucharmap|[Nn]m-connection-editor|[Rr]istretto|[Ss]xiv)
+    echo "state = floating"
+    echo "center = on"
+    ;;
+  Brave-browser)
+    echo "desktop = ^2"
+    echo "private = on"
+    echo "follow = on"
+    ;;
+  [Mm]pv|gl)
+   echo "desktop = ^4"
+   echo "state = fullscreen"
+   echo "follow = on"
+   ;;
+ ncmpcpp)
+   echo "desktop = ^4"
+   echo "follow = on"
+   ;;
+ [Tt]hunar)
+   echo "desktop = ^3"
+   echo "follow = on"
+   ;;
+ st-ws1)
+   echo "desktop = ^1"
+   echo "follow = on"
+   ;;
+ [tT]int2)
+   echo "border = off"
+   echo "focus = off"
+   echo "manage = on"
+   echo "layer = below"
+   ;;
+ [Tt]elegram*|[kK]otatogram[dD]esktop)
+   echo "desktop = ^5"
+   echo "follow = on"
+   echo "focus = on"
+   echo "state = pseudo_tiled"
+   echo "rectangle = 1136x674+0+0"
+   ;;
+   Kotatogram-[dD]esktop)
+   echo "follow = on"
+   echo "focus = on"
+   echo "state = floating"
+   echo "rectangle = 1036x604+0+0"
+  ;;
+ st-drop)
+   echo "layer = above"
+   echo "manage = on"
+   echo "focus = on"
+   echo "sticky = on"
+   echo "state = floating"
+   ;;
+ cava-drop)
+   echo "border = off"
+#   echo "layer = below"
+   echo "manage = on"
+   echo "focus = off"
+   echo "state = floating"
+   ;;
+esac
+
+case $instance in
+  [fF]irefox)
+    echo "follow = on"
+    echo "state = floating"
+    echo "center = on"
+    echo "rectangle = 650x420+0+0"
+    ;;
+  [Nn]avigator)
+    echo "desktop = ^2"
+    echo "follow = on"
+  ;;
+  [Tt]oolkit)
+    echo "state = floating"
+    echo "layer= above"
+    echo "sticky = on"
+    echo "focus = on"
+    echo "manage = on"
+    echo "border = off"
+    echo "rectangle = 570x321+5+25"
+  ;;
+esac
+
+case $title in
+  'Picture in picture')
+    echo "state = floating"
+    echo "sticky = on"
+    echo "focus = off"
+    echo "manage = on"
+    echo "border = off"
+    echo "rectangle = 890x451+10+10"
+    ;;
+  lstopo|'Media viewer')
+    echo "state = floating"
+    echo "center = on"
+    ;;
+esac
+

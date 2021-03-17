@@ -1,0 +1,70 @@
+#---------------------------------------------- bspc
+
+# Set the window state
+super + ctrl + space
+  bspc node -t {tiled,pseudo_tiled,floating}
+
+# Focus selected desktop
+super + {1-9,0}
+  bspc desktop -f '^{1-9,10}'
+
+# Balance nodes
+super + shift + s
+  bspc node @/ -B
+
+# Change node[s]
+super + Tab
+  bspc node -f next
+
+# Toggle fullscreen of window
+super + f
+  bspc node --state \~fullscreen
+
+# Kill window
+super + q
+  bspc node -c
+
+# Increase/decrease window gap on focused desktop
+super + bracket{left,right}
+  bspc-script adjust-gap {-,+} 5
+
+# Rotate layout
+super + {_,alt} + space
+  bspc node @/ -C {forward,backward}
+
+# Focus/swap windows by direction
+super + {_,shift t+ }{Left,Down,Up,Right}
+  bspc node --{focus,swap} {west,south,north,east}
+
+# Move floating window
+super + alt + {_,shift + }{Left,Down,Up,Right}
+  ~/.config/bspwm/scripts/move-window {_,edge-}{west,south,north,east}
+
+# Move current window to a pre-selected space
+super + ctrl + m
+    bspc node -n last.!automatic ||  bspc-script move-receptacle
+
+# Preselect area on current window
+super + ctrl + {Left,Down,Up,Right}
+  bspc node --presel-dir \~{west,south,north,east}
+
+# Move current window to selected desktop
+super + shift + {1-9,0}
+  bspc node -d '^{1-9,10}' --follow
+
+# Close all receptacle
+super + shift + i
+  bspc-script close-receptacle
+
+# Insert receptacle
+super + i; {Left,Down,Up,Right}
+  bspc node --presel-dir {west,south,north,east} -i
+
+#Reload bspwm
+super + shift + r
+  ~/.config/bspwm/bspwmrc
+
+# Logout
+super + shift + x
+  bspc quit
+

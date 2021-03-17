@@ -1,0 +1,131 @@
+
+#------------------------------------------------ open app
+
+# dmenu
+super + r
+  rofi -show drun
+  #j4-dmenu-desktop --no-generic --dmenu="dmenu -i -nb '#06042f' -nf '#c2bced' -sb '#4e54fb' -sf '#06042f' -fn 'NotoMonoRegular:bold:pixelsize=13'"
+
+# Draw st
+super + alt + Return
+  st-draw
+
+#Dropdown st
+super + Return
+  st-drop
+
+#Dropdown cava
+super + c
+  cava-drop
+
+#st
+super + t
+  st
+
+# Browser
+super + b
+  firefox
+
+#Pavucontrol
+super + v
+  pavucontrol
+
+# Ncmpcpp
+super + m
+  mpd & killall ncmpcpp & st -c "ncmpcpp" ncmpcpp
+
+# Thunar
+super + e
+  thunar
+
+# St ws1
+super + alt + t
+  st -c "st-ws1"
+
+
+#--------------------------------------------run app/command
+
+# Hide/Show polybar
+super + y
+  polybar-msg cmd toggle
+
+# Picom Toggle
+super + p
+  picom-toggle
+
+# Reboot
+super + alt +Delete
+  loginctl reboot -i
+
+# Reload xprofile
+super + w
+  ~/.xprofile
+
+# Reload sxhkd:
+super + s
+  pkill -USR1 -x sxhkd
+
+# Screenshoot
+Print
+  maimpick
+
+# Shutdown
+XF86PowerOff
+  prompt "Matikan perangkat ?" "loginctl poweroff -i"
+
+# Xkill
+super + Escape
+  xkill
+
+#-------------------------------- Multimedia
+
+# Raises volume
+XF86AudioRaiseVolume
+  amixer set Master 5%+
+
+# Lowers volume
+XF86AudioLowerVolume
+  amixer set Master 5%-
+
+# Mute
+XF86AudioMute
+  amixer -D pulse set Master 1+ toggle
+
+#Playerctl works for Pragha, Spotify and others
+#Delete the line for playerctl if you want to use mpc
+#and replace it with the corresponding code
+#mpc works for e.g.ncmpcpp
+#mpc toggle
+#mpc next
+#mpc prev
+#mpc stop
+
+# PLAY/Pause
+XF86AudioPlay
+  [ -z $(pgrep mpd) ] && mpd || mpc toggle
+    #playerctl play-pause
+
+# Next
+XF86AudioNext
+  mpc next
+    #playerctl next
+
+# Previous
+XF86AudioPrev
+  mpc prev
+    #playerctl previous
+
+# Stop
+XF86AudioStop
+  mpc stop
+    #playerctl stop
+
+# Brightness up
+XF86MonBrightnessUp
+  xbacklight -inc 10
+
+# Brightness down
+XF86MonBrightnessDown
+  xbacklight -dec 10
+
+#-----------------------------------------end

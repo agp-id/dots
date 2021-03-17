@@ -1,0 +1,125 @@
+#!/usr/bin/env sh
+
+# Just for coloring
+
+##=======================================arch/artix repo
+##--------------------------- Base-devel
+binutils
+bison
+fakeroot
+gcc
+m4
+make
+patch
+pkgconf
+#sudo
+##---------------------------
+opendoas
+
+##--------------------------- shell
+fish
+
+##--------------------------- xorg
+xf86-video-intel
+xorg-server
+xorg-xinit
+#xorg-xbacklight
+xorg-xkill
+xorg-xprop
+xorg-xrandr
+#xorg-xrdb
+xorg-xset	#d picom
+xorg-xsetroot
+
+##--------------------------- bspwm
+bspwm
+sxhkd
+
+##--------------------------- app
+#android-sdk-platform-tools
+#android-tools
+awesome-terminal-fonts #d lsd
+#dmenu
+feh
+fftw	#d picom cava
+file-roller
+firefox
+git
+#gucharmap
+htop
+imagemagick
+iniparser #d cava
+#j4-dmenu-desktop
+lsd
+lsb-release #d fetch
+maim
+man-db
+#meld
+mtpfs
+noto-fonts
+otf-font-awesome
+p7zip
+picom
+polkit-gnome
+polybar
+portaudio	 #d mpd cava
+ps_mem
+#qt5-styleplugins
+reflector
+rofi
+slop
+#scrot
+stow
+#telegram-desktop
+ttf-droid
+unclutter
+unrar
+unzip
+wget
+xclip
+xdo
+xdotool
+xtrlock
+
+##------------------------ runit-app
+#alsa-utils-runit
+#cups-runit
+ntp-runit
+rsm
+
+##------------------------ audio/video
+#alsa-plugins
+alsa-utils
+#pavucontrol
+pulseaudio-alsa #d cava
+mpc
+mpd
+ncmpcpp
+
+mpv
+
+##------------------------ filemanager
+thunar
+ffmpegthumbnailer
+gvfs-mtp
+thunar-archive-plugin
+thunar-media-tags-plugin
+tumbler
+
+##------------------------ printer
+cups
+ghostscript
+gutenprint
+system-config-printer
+
+
+##============================================ AUR repo
+#brave-bin
+#gotop-bin
+#icons-in-terminal
+kotatogram-desktop-bin
+#networkmanager-dispatcher-ntpd
+#sublime-text-dev
+paru-bin
+ttf-menlo-powerline-git
+#ventoy-bin
