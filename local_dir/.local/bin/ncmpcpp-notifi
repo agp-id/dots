@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+music_library="$HOME/music"
+
+fallback_image="/usr/share/icons/Gruvbox-Material-Dark/16x16/apps/multimedia-audio-player.svg"
+
+ffmpeg -y -i "$(mpc --format "$music_library"/%file% | head -n 1)" /tmp/mpd_cover.jpg > /dev/null 2>&1 && {
+
+  [[ -z "$(mpc --format '%title%' current)" ]] &&
+  notify-send -u low -i /tmp/mpd_cover.jpg "Now Playing" "$(mpc current)" ||
+  notify-send -u low -i /tmp/mpd_cover.jpg "Now Playing" "$(mpc --format '%title%' current)"
+ } || {
+
+  [[ -z "$(mpc --format '%title%' current)" ]] &&
+  notify-send -u low -i $fallback_image "Now Playing" "$(mpc current)" ||
+  notify-send -u low -i $fallback_image "Now Playing" "$(mpc --format '%title%' current)"
+}

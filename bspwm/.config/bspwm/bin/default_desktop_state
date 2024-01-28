@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+#Set default state on specific desktop
+#By: Agung p (http://github.com/agp-id)
+#Create date: 15-02-2022
+
+#Usage:
+# in bspwmrc add
+# $HOME/.config/bspwm/scripts/default_desktop_state [desktop name] [tiled|pseudo_tiled|floating|fullscreen]
+
+selected_desktop="$(bspc query -D -d $1)"
+
+#kill previus progress
+kill $(cat /tmp/def_deskstop_state_$1)
+
+bspc subscribe node_add | while read -r _ _ focused_desktop_id window_id; do
+    [[ $focused_desktop_id = $selected_desktop ]] &&
+        bspc node --state $2
+done &
+echo $! > /tmp//def_deskstop_state_$1

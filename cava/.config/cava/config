@@ -1,0 +1,11 @@
+[color]
+    gradient = 1
+    gradient_count = 4
+    gradient_color_1 = '#7dfed3'
+    gradient_color_2 = '#d3869b'
+    gradient_color_3 = '#f2594b'
+    gradient_color_4 = '#e9b143'
+
+[general]
+    bar_width = 3
+    sensitivity = 95

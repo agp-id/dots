@@ -1,0 +1,59 @@
+#!/usr/bin/env sh
+#Scripts-mager by Agp (http://github.com/agp-id)
+#Create on 2021-03-17
+#last edit 2023-12-22
+
+_listCmd="Bspwm autorun
+Bspwmrc
+Bspwm keybind
+Bspwm rules
+Cava config
+Dunst config
+Fish alias
+Fish config
+Ftp open
+Mager script
+Mpd/Ncmpcpp clear
+Polybar config
+Sxhkdrc
+.Xinitrc"
+
+case "$(echo "$_listCmd"   |rofi -dmenu -i -p "Mager")" in
+    "Bspwm autorun")
+        $TERMINAL -c "Autorun" $EDITOR $HOME/.config/bspwm/bin/autostart;;
+    "Bspwmrc")
+        $TERMINAL  -c "Bspwmrc" $EDITOR $HOME/.config/bspwm/bspwmrc;;
+    "Bspwm key"*)
+        $TERMINAL -c "Bspwm-keybind" $EDITOR $HOME/.config/bspwm/sxhkdrc;;
+    "Bspwm rule"*)
+        $TERMINAL -c "Bspwm-rules" $EDITOR $HOME/.config/bspwm/external_rules;;
+    "Cava"*)
+        $TERMINAL -c "Cava-config" $EDITOR $HOME/.config/cava/config;;
+    "Dunst"*)
+        $TERMINAL -c "Dunst-config" $EDITOR $HOME/.config/dunst/dunstrc;;
+    "Fish alias"*)
+        $TERMINAL -c "Fish-alias" $EDITOR $HOME/.config/fish/alias.fish;;
+    "Fish conf"*)
+        $TERMINAL -c "Fish-config" $EDITOR $HOME/.config/fish/config.fish;;
+    "Ftp"*)
+        $TERMINAL -c "Open-ftp" -g 60x3+470+22 ftp-open;;
+    "Mager"*)
+        $TERMINAL -c "Mager-script" $EDITOR $HOME/.config/bspwm/bin/mager-script;;
+    "Mpd"*)
+        killall mpd ncmpcpp
+        cd ~/.config/mpd
+        pwd |grep '/mpd' &&
+            rm -rf $(ls |sed '/mpd.conf/d')
+        cd ~/.config/ncmpcpp
+        pwd |grep '/ncmpcpp' &&
+            rm -rf $(ls |sed '/config/d')
+        notify-send 'Mpd/Ncmpcpp' "  Reset finish";;
+    "Nvim plug"*)
+        $TERMINAL -c "Nvim-plug" $EDITOR $HOME/.config/nvim/vim-plug/plugins.vim;;
+    "Polybar"*)
+        $TERMINAL -c "Polybar-config" $EDITOR $HOME/.config/polybar/config.ini;;
+    "Sxhkd"*)
+        $TERMINAL -c "Sxhkdrc" $EDITOR $HOME/.config/sxhkd/sxhkdrc;;
+    ".Xinitrc")
+        $TERMINAL -c "Xinitrc" $EDITOR $HOME/.xinitrc;;
+esac

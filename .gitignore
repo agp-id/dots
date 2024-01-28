@@ -1,0 +1,6 @@
+/9_git*
+/cava/.config/cava/shaders
+/misc/.gitconfig
+/st/{st,*.o,st-*}
+/git
+/wall
