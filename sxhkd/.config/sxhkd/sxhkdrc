@@ -1,0 +1,83 @@
+#------------------------------------------------ open app
+
+# Open app
+super + r
+    rofi -show drun -p "app" -display-drun ""
+    #j4-dmenu-desktop --no-generic --dmenu="dmenu -i -nb '#06042f' -nf '#c2bced' -sb '#4e54fb' -sf '#06042f' -fn 'NotoMonoRegular:bold:pixelsize=13'"
+
+# Terminal
+super + {alt +,_} t
+    st -c {"Term","Terminal"}
+
+# Browser
+super + w
+    firefox #librewolf
+
+#Pavucontrol
+#super + v
+    #pavucontrol
+
+# Inject
+super + i
+    inject
+
+# Ncmpcpp
+super + m
+    mpd & killall ncmpcpp & st -c "ncmpcpp" ncmpcpp
+
+# File manager
+super + e
+    thunar
+
+# Picom toggle
+super + o
+    picom-toggle
+
+# Play list
+super + {_,alt +} p
+    st -c {"Play vidio" play,"Play audio" play -a}
+
+# Reboot
+super + alt + Delete
+    loginctl reboot -i
+
+# Reload sxhkd
+super + s
+    pkill -USR1 -x sxhkd
+
+# Screenshoot
+Print
+    maimpick
+
+# Shutdown
+XF86PowerOff
+    power_menu
+
+# Force kill app (click)
+super + Escape
+    xkill
+
+# Lockscreen
+super + l
+    xtrlock
+
+#-------------------------------- Multimedia
+
+# Audio
+XF86Audio{RaiseVolume,LowerVolume,Mute}
+    volume {up,down,mute}
+
+# Mpd
+# Play/Pause
+XF86AudioPlay
+    test -z $(pgrep mpd) && mpd && mpc pause; mpc toggle
+
+# Next,previus,stop
+XF86Audio{Next,Prev,Stop}
+    mpc {next,prev,stop}
+
+# Brightness
+XF86MonBrightness{Up,Down}
+    brightness {up,down}
+
+#-----------------------------------------end

@@ -1,0 +1,109 @@
+#!/bin/env sh
+# save playlist bellow
+# .. is automatic numbering
+# inside '' is unique youtube link after 'list=' (for playlist) or 'watch?v=' (for single video) and end before '&' if exist
+
+## Force exit
+trap exit SIGINT
+
+list="
+    Cecilia Lieberia Ch.『 Re:Memories 』
+        ..Baru pulang, karaoke              'yZ2PT2HRbfI'
+        ..Chilling karaoke 2                '_CzfoARWviM'
+        ..Sebelum istirahat, karaoke        '76Igidx24tM'
+    Chloe Pawapua
+        ..Chill karaoke 12 songs            'SJHfvyHkrMg'
+    Gawr Gura
+        ..Karaoke 25 songs                  'A2P3cZ1Qe8M'
+    Global Musik
+        ..Brodin Playlist                   'PLqeWEx8k20q0n8x3Hksi0aConYvwGb5zw'
+    Kobo Kanaeru
+        ..Playlist by vtuberchan (shuffle)  'PLjEKzjxXYK-5qm6r6ejfLnF84caseuRnC'
+        ..Unarchived 14 Juni 2023 karaoke   'KF-mdsJ2nZ4'
+    Lala Atila
+        ..Playlist (shuffle)       'PLktuMvcjvO6a1ZaJfyRsJHJOYjEnq_DLL'
+    Saint House
+        ..Music Playlist                    'PLTvodjdZ2428mWsy8o5Auo96ThsE_tTN3'
+    Sisasose
+        ..Indonesia cover (shuffle)         'PLqlCUPSdRM7W2MUR14ESAR6RmcFqYRdRt'
+        ..JKT48 Playlist (shuffle)          'PLqlCUPSdRM7UEaHkvTv0f61upiftnnWGb'
+        ..JKT48 Pop Punk vol.2              'GQIyJnAuypg'
+    서준(Seojun)
+        ..서준 Playlist                     'PLFl68teIAOaxCdaO3BVBjjc6YG_0bPkZG'
+
+        0. exit
+"
+tmp_opt='/tmp/play_opt'
+echo "$@" |sed 's/ /\n/g' >$tmp_opt
+url="$(cat $tmp_opt |grep '^http')"
+
+[[ $(cat $tmp_opt | grep '^-a') ]] &&
+    a='--ytdl-format=bestaudio' # --term-osd-bar=yes
+
+play(){
+    mpv --display-tags='' --term-playing-msg='      --[  ${media-title}  ]--' $@
+}
+
+play_url(){
+    if [[ $a ]]; then
+        play $a "$url"
+    elif [[ -z "$(cat $tmp_opt |grep '^-r='| sed 's/-r=//')" ]]; then
+        play "$url"
+    else
+        case "$(cat $tmp_opt |grep '^-r='| sed 's/-r=//')" in
+            1080)   res=1080;;
+            720)    res=720;;
+            480)    res=480;;
+            360)    res=360;;
+            240)    res=240;;
+            144)    res=144;;
+            *)      echo "Resolution not found, use default [720]!"
+                    res=720;;
+        esac
+        play --ytdl-format="bestvideo[height<=?$res]+bestaudio/best" "$url"
+    fi
+    exit
+}
+
+playlist(){
+    clear
+    [[ $a ]] &&
+        echo "--audio only--" ||
+        echo "--video--"
+
+    tmp_list='/tmp/play_list'
+    echo -e "$list" > $tmp_list
+    nm=1
+    tabs 2
+    IFS=''
+    while [[ -n $(grep '\.\.' <$tmp_list) ]]; do
+        sed -i "0,/\.\./s//$nm\.\t/" $tmp_list
+        ((nm++))
+    done
+    IFS=' '
+
+    cat $tmp_list |sed "s/'.*//g"
+    read -p "Number to play:  " n""
+    n="$(echo $n |sed 's/ //g;s/[a-z,A-Z]//g')"
+    sub=$(cat $tmp_list |grep " $n\..*'" |grep -o "'.*'" |sed "s/'//g")
+    case $n in
+        0*) exit
+            ;;
+        *)  [[ -n $n ]] && [[ -n $sub ]] || {
+                printf "$n not found! "
+                sleep 2
+                playlist
+                return
+            }
+            ;;
+    esac
+    if [[ "$(echo $sub | wc -m)" > 15 ]]; then
+        play --shuffle $a "https://www.youtube.com/playlist?list=$sub"
+    else
+        play $a "https://www.youtube.com/watch?v=$sub"
+    fi
+    playlist
+}
+
+[[ $url ]] && play_url || playlist
+

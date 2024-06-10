@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+
+vol_step=5
+
+[[ $(connmand -v amixer) ]] || exit
+[[ $(pgrep pipewire) ]] &&
+    server='pipewire'
+
+case $1 in
+    up)
+        wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+ ||
+            amixer -D $server set Master ${vol_step}%+
+        ;;
+    down)
+        wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%- ||
+            amixer -D $server set Master ${vol_step}%-
+        ;;
+    toggle|mute)
+        wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle ||
+        amixer -D $server set Master 1+ toggle
+        ;;
+    *)
+        echo "Usage: volume [up|down|toggle/mute]"
+        ;;
+esac

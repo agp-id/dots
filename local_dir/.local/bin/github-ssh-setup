@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+echo -e "--Create SSH keys--\n"
+check_email_uname (){
+    printf "Email connected to github: "
+    read -r email
+    printf "Github username: "
+    read -r username
+    [ -z $email ] || [ -z $username ] && {
+        echo -e "please insert your email and github username...!\n"
+        sleep 1
+        check_email_uname
+    }
+}
+
+check_email_uname
+ssh-keygen -t rsa -C "$email"
+
+[[ ! -f ~/.ssh/id_rsa.pub ]] && {
+  echo -e "\n~/.ssh/id_rsa.pub not found"
+  exit
+}
+
+if command -v xclip > /dev/null; then
+    cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+    echo -e "\nSSH-key code copied to clipboard"
+else
+    echo -e "\nYour SSH-key code is:\n"
+    cat ~/.ssh/id_rsa.pub
+    echo
+fi
+
+echo -e "\nPlease add SSH-key to github befor continue!"
+read
+
+echo -e "\n\nTest on this device\n"
+ssh -T git@github.com
+
+echo -e "\nCreate user config..."
+cho -e "[user]\n\temail = $email\n\tname = $username\n[init]\n\tdefaultBranch = main" > ./misc/.gitconfig &&
+    echo "-- Created"
+

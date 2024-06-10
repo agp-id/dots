@@ -1,0 +1,70 @@
+#!/usr/bin/env sh
+
+# Thanks to:
+# Allah SWT
+# https://bandithijo.github.io
+
+# Edited on: 04-09-2023
+# by: Agp https://github.com/agp-id
+
+timeStamp="$(date '+%y%m%d-%H%M-%S')"
+screenShotDir="$HOME/picture/screenshot"
+fileName="$screenShotDir/Screenshot_$timeStamp.png"
+
+# Check dir
+[ ! -d "$screenShotDir" ] && mkdir -pv "$screenShotDir"
+
+### Decor (imagemagic) -----------------------------------------------------
+color_profile='/usr/share/color/icc/colord/sRGB.icc'
+border_size='0'
+background_color='#f4f3ba' # 'none' for transparent; Hex color use '"#-000001"'
+background_size='1'
+shadow_size='50x10+0+4'
+font='JetBrainsMono-NF-ExtraBold'
+font_size='10'
+color_fg='#666665'
+color_bg='none'
+author_position1='SouthEast'
+author_position2="+23+5"
+author="\ by: @agp2nd ($(date '+%Y-%m-%d'))"
+
+saveAndCopy (){
+
+    magick convert $fileName -bordercolor $color_bg -border $border_size $fileName
+
+    magick convert $fileName \( +clone -background black \
+        -shadow $shadow_size \) +swap -background none \
+        -layers merge +repage $fileName
+
+    magick convert $fileName -bordercolor $background_color \
+        -border $background_size $fileName
+
+    magick convert $fileName \
+        -gravity $author_position1 -pointsize $font_size -fill $color_fg \
+        -undercolor $color_bg -font "$font" \
+        -annotate $author_position2 "$author" $fileName
+
+    magick convert $fileName -gravity South -chop 0x$((background_size/2)) $fileName
+
+    magick convert $fileName -gravity North -background $background_color \
+        -splice 0x$((background_size/2)) $fileName
+
+    magick convert $fileName -profile $color_profile $fileName
+
+#copy to clip
+    xclip -selection clipboard -i $fileName -t image/png &&
+        copy='\n  & copied to clipboard'
+
+#notify
+    notify-send 'Screenshoot' "   $timeStamp saved${copy}"
+
+}
+#----------------------------------------------------------------------------
+
+case "$(printf "Selected area\\nCurrent window\\nFull screen" \
+    | rofi -dmenu "Screenshot & copy")" in
+        "Selected area") maim -q -d 1 -s "$fileName" && saveAndCopy ;;
+        "Current window") maim -d 1 -i "$(xdotool getactivewindow)" -B "$fileName" \
+            && saveAndCopy ;;
+        "Full screen") maim -d 1 "$fileName" && saveAndCopy ;;
+esac
