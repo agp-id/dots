@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+
+## Skip if already runing
+run (){
+    [[ ! $(pgrep -f $1) ]] &&
+        $sf $@
+}
+## Restart app
+rerun (){
+    if [[ $(pgrep $1) ]]; then
+        killall $1
+    fi
+        sleep 1 && $@
+}
+
+feh --no-fehbg --randomize --bg-fill ~/.local/share/bg &
+#run connman-gtk --tray &
+run nm-applet &
+run blueman-applet &
+run picom &
+$HOME/.config/polybar/launch.sh &
+xsetroot -cursor_name left_ptr &
+rerun dunst &
+#rerun deadd-notification-center &
+#    sleep 1 && notify-send "Deadd" "is running" &
+unclutter &
+
+rerun sxhkd -c $HOME/.config/{sxhkd/sxhkdrc,bspwm/sxhkdrc} &
+run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

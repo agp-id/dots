@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+#show sxhkd keybind
+
+awk '/^[a-z]/ && last {print $0,"\t",last} {last=""} /^#/{last=$0}' \
+  ~/.config/{bspwm,sxhkd}/sxhkdrc |
+  column -ts $'\t' |
+  rofi -dmenu -i -no-show-icons -p "Shortcut:" lines 15 -yoffset 40
+

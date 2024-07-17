@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+## Cava on buttom
+## By: Agp (@agp2nd)
+## Edited on: 16-09-2023
+
+## Resolution
+R=$(xrandr |grep '*' |cut -d ' ' -f4)
+W=$(echo $R |cut -d x -f1)
+H=$(echo $R |cut -d x -f2)
+gW=$(($W/7))
+echo $gW
+case $R in
+    "1920"*)
+        g="${gW}x39+4+413" ;;
+    *)
+        g='198x39+-9+180' ;;
+esac
+
+if
+   xdo id -N cava-drop > /dev/null
+ then
+   xdo kill -N cava-drop
+ else
+   st -C "black@0" -A 0 -c "cava-drop" -g ${g} cava &
+   sleep 1 && bspc node -f $(xdo id -N st-drop) &
+fi

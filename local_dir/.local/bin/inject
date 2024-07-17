@@ -1,0 +1,53 @@
+#!/usr/bin/env sh
+# INJECT Clash (mihomo)
+conf="/home/$USER/.config/mihomo"
+mihomo="$(command -v mihomo)"
+pkexec="$(command -v pkexec)"
+[[ $USER == "root" ]] && su=''
+
+## Force exit
+trap exit SIGINT
+
+nterm(){
+    if [[ -z $mihomo ]]; then
+        notify-send -t 2000 -e "INJECT" "\n  Mihomo: not found!"
+        exit 1
+    elif [[ -z $pkexec ]]; then
+        notify-send -t 2000 -e "INJECT" "\n  PkExec: not found!"
+        exit 1
+    else
+        if [[ ! $(pgrep mihomo) ]]; then
+            while true; do
+                [[ -n $(pgrep mihomo) ]] && {
+                    notify-send -t 2000 -e "INJECT" "\n  Mihomo: starting..."
+                    break
+                }
+            done &
+            pid=$!
+            $pkexec mihomo -d $conf || kill $pid
+        else
+            $pkexec killall mihomo &&
+            notify-send -t 2000 -e "INJECT" "\n  Mihomo: stoped!"
+        fi
+    fi
+}
+term(){
+    if [[ -z $mihomo ]]; then
+        echo "mihomo: command not found!"
+        exit 1
+    else
+        if [[ ! $(pgrep mihomo) ]]; then
+            $su mihomo -d $conf
+        else
+            $su killall mihomo &&
+                echo "Mihomo: stoped!"
+        fi
+    fi
+}
+
+# Check run in display/terminal
+if [[ -n $DISPLAY ]] && [[ $TERM == linux ]]; then
+    nterm
+else
+    term
+fi

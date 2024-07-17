@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+#Toggle one or more bar[s] in polybar
+#By: agung p (github.com/agp-id)
+#Date: 13-02-2022
+
+# usage: polybar_toggle.sh [all(default)|top|bottom]
+
+priMon=$(xrandr --query |grep -w "connected primary" |cut -d" " -f1)
+
+# bspwm
+read top_padding < /tmp/top_padding
+read bottom_padding < /tmp/bottom_padding
+[[ -z $top_padding ]] && top_padding=0
+[[ -z $bottom_padding ]] && bottom_padding=0
+
+[[ $(bspc config -m $priMon top_padding) = 0 ]] &&
+    padding_top=$top_padding ||
+    padding_top=0
+[[ $(bspc config -m $priMon bottom_padding) = 0 ]] &&
+    padding_bottom=$bottom_padding ||
+    padding_bottom=0
+
+case $1 in
+    top)
+        [[ $(cat /tmp/polybar_pid1) ]] || exit 1
+        polybar-msg -p $(cat /tmp/polybar_pid1) cmd toggle &
+        bspc config -m $priMon top_padding $padding_top
+    ;;
+    bottom)
+        [[ $(cat /tmp/polybar_pid2) ]] || exit 1
+        polybar-msg -p $(cat /tmp/polybar_pid2) cmd toggle &
+        bspc config -m $priMon bottom_padding $padding_bottom
+    ;;
+    *)
+        polybar-msg cmd toggle &
+        bspc config -m $priMon top_padding $padding_top &
+        bspc config -m $priMon bottom_padding $padding_bottom
+    ;;
+esac

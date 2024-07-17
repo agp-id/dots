@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+
+
+# Check arguments
+  case $1 in
+    adjust-gap)
+      gap=`bspc config -d focused window_gap`
+      if [[ "(($gap $2 $3))" -lt "0" ]];then
+        bspc config -d focused window_gap 0
+      else
+        bspc config -d focused window_gap $(($gap $2 $3))
+      fi
+      ;;
+
+    close-receptacle)
+      for win in $(bspc query -N -n .leaf.\!window)
+      do
+        bspc node $win -k
+      done
+      ;;
+
+    move-receptacle)
+      bspc node $(bspc query -N -n focused) -n $(bspc query -N -n .leaf.\!window)
+      ;;
+
+    *)
+      # Exit on unknown arguments
+      echo "Usage \"bspc-script [funtion]\"
+      Funtion list:
+
+      1) adjust-gap [+-] n
+          Adjust gap on curent desktop
+      2) close-receptacle
+          Close all receptacle
+      3) move-receptacle
+          Move focus window to last receptacle"
+      exit 1
+      ;;
+
+  esac
+

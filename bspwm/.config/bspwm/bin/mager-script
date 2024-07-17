@@ -1,0 +1,70 @@
+#!/usr/bin/env sh
+#Scripts-mager by Agp (http://github.com/agp-id)
+#Create on 2021-03-17
+#last edit 2024-05-09
+
+_listCmd="Bashrc
+Bspwm autorun
+Bspwmrc
+Bspwm keybind
+Bspwm rules
+Cava config
+Clash proxy
+Dunst config
+Fish alias
+Fish config
+Mager script
+Mpd/Ncmpcpp clear
+Playlist
+Polybar config
+Sxhkdrc
+.Xinitrc"
+
+run(){
+    $TERMINAL -c "$1" $EDITOR "$2"
+}
+dotsdir="$(readlink -f $(command -v prompt) | sed 's/local_.*//')"
+
+case "$(echo "$_listCmd"   |rofi -dmenu -i -p "Mager")" in
+    "Bashrc")
+        run "Bashrc" ${dotsdir}system-wide//etc/bash/bashrc.d/99-custom.bashrc;;
+    "Bspwm autorun")
+        run "Autorun" $HOME/.config/bspwm/bin/autostart;;
+    "Bspwmrc")
+        run "Bspwmrc" $HOME/.config/bspwm/bspwmrc;;
+    "Bspwm key"*)
+        run "Bspwm-keybind" $HOME/.config/bspwm/sxhkdrc;;
+    "Bspwm rule"*)
+        run "Bspwm-rules" $HOME/.config/bspwm/external_rules;;
+    "Cava"*)
+        run "Cava-config" $HOME/.config/cava/config;;
+    "Clash"*)
+        run "Clash Proxies" $HOME/.config/mihomo/provide/sub.yaml;;
+    "Dunst"*)
+        run "Dunst-config" $HOME/.config/dunst/dunstrc;;
+    "Fish alias"*)
+        run "Fish-alias" $HOME/.config/fish/alias.fish;;
+    "Fish conf"*)
+        run "Fish-config" $HOME/.config/fish/config.fish;;
+    "Mager"*)
+        run "Mager-script" $HOME/.config/bspwm/bin/mager-script;;
+    "Mpd"*)
+        killall mpd ncmpcpp
+        cd ~/.config/mpd
+        pwd |grep '/mpd' &&
+            rm -rf $(ls |sed '/mpd.conf/d')
+        cd ~/.config/ncmpcpp
+        pwd |grep '/ncmpcpp' &&
+            rm -rf $(ls |sed '/config/d')
+        notify-send 'Mpd/Ncmpcpp' "  Reset finish";;
+    "Nvim plug"*)
+        run "Nvim-plug" $HOME/.config/nvim/vim-plug/plugins.vim;;
+    "Play"*)
+        run "Playlist" $HOME/.local/bin/play;;
+    "Polybar"*)
+        run "Polybar-config" $HOME/.config/polybar/config.ini;;
+    "Sxhkd"*)
+        run "Sxhkdrc" $HOME/.config/sxhkd/sxhkdrc;;
+    ".Xinitrc")
+        run "Xinitrc" ${dotsdir}system-wide/etc/X11/xinit/xinitrc.d/99-xinitrc.sh;;
+esac

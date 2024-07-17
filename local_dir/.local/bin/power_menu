@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+
+# Power menu by Agp
+
+if [ "$(ps -e |grep '[Xx]org$')" ]; then
+    [ $(command -v xset) ] &&
+        isXorg='|Screen off|Screen always on'
+    [ $(command -v xset) ] &&
+        isXtrL='|Lock'
+fi
+
+_chosen="Shutdown|Reboot$isXtrL$isXorg"
+
+stat /sbin/init | grep systemd && {
+    _off='poweroff'
+    _reb='reboot'
+} || {
+        _off='loginctl poweroff -i'
+        _reb='loginctl reboot -i'
+    }
+
+case "$(echo "$_chosen" |rofi -sep "|" -dmenu -i -p "Power Menu:")" in
+    "Shutdown")
+        prompt "Shutdown device ?" "$_off"
+    ;;
+    "Reboot")
+        prompt "Reboot device ?" "$_reb"
+    ;;
+    "Lock")
+        xtrlock
+    ;;
+    "Screen off")
+        sleep 1 && xset dpms force off
+    ;;
+    "Screen always on")
+        xset dpms force on
+    ;;
+esac

@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+## Show or hide dropdown st-terminal
+## By: Agp (@agp2nd)
+## Edited on: 16-04-2024
+
+## Resolution
+R=$(xrandr |grep '*' |cut -d ' ' -f4)
+W=$(echo $R |cut -d x -f1)
+H=$(echo $R |cut -d x -f2)
+gW=$(($W/7))
+border=$(bspc config border_width)
+
+if
+   xdo id -N st-drop > /dev/null
+ then
+   bspc node "$(xdo id -N st-drop)" --flag hidden -f
+ else
+   st -c "st-drop" -g ${gW}x20+-$border+-$border
+fi

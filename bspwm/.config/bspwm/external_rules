@@ -1,0 +1,121 @@
+#!/usr/bin/env sh
+
+#Thanks to  -ALLAH SWT
+#           -https://github.com/Awan
+
+top_padding=27
+
+wid=$1
+class=$2
+instance=$3
+consequences=$4
+title=$(xdotool getwindowname $wid)
+
+case $class in
+    st-draw|open-ftp)
+        echo "state = floating"
+        ;;
+    [Ee]ngrampa|[Ff]eh|[Ff]ile-roller|[Gg]ucharmap|[Nn]m-connection-editor|[Rr]istretto|[Ss]xiv|[Yy]ad)
+        echo "state = floating"
+        echo "center = on"
+        ;;
+    cava-drop)
+        echo "border = off"
+        echo "layer = above"
+        echo "manage = on"
+        echo "focus = off"
+        echo "state = floating"
+        ;;
+    [cC]hromium)
+        echo "desktop = ^1"
+        echo "private = on"
+        echo "follow = on"
+        ;;
+    [Mm]pv|gl)
+        echo "desktop = ^4"
+        echo "state = floating"
+        echo "follow = on"
+        echo "manage = on"
+        echo "border = off"
+        echo "rectangle = 570x321+5+$(($top_padding+5))"
+        ;;
+    ncmpcpp)
+        echo "desktop = ^4"
+        echo "follow = on"
+        ;;
+    st-drop)
+        echo "layer = above"
+        echo "manage = on"
+        echo "focus = on"
+        echo "sticky = on"
+        echo "state = floating"
+        ;;
+    64[Gg]ram|[Tt]elegram*|[kK]otatogram*)
+        echo "desktop = ^5"
+        echo "follow = on"
+        echo "focus = on"
+        #echo "state = pseudo_tiled"
+        #echo "rectangle = 900x700++0+0"
+        ;;
+    [Tt]hunar)
+        echo "desktop = ^3"
+        echo "follow = on"
+        ;;
+    [tT]int2)
+        echo "border = off"
+        echo "focus = off"
+        echo "manage = on"
+        echo "layer = below"
+        ;;
+esac
+
+case $instance in
+    [fF]irefox|Places)
+        echo "follow = on"
+        echo "state = floating"
+        echo "center = on"
+        echo "rectangle = 650x420+0+0"
+        ;;
+    [Nn]avigator)
+        echo "desktop = ^1"
+        echo "follow = on"
+        ;;
+    st-256color)
+        case $class in
+            cava-drop|ncmpcpp|st-draw|Term)
+                :
+                ;;
+            *)
+                echo "desktop = ^2"
+                echo "follow = on"
+                ;;
+        esac
+        ;;
+    [Tt]oolkit)
+        echo "state = floating"
+        echo "layer = above"
+        echo "sticky = off"
+        echo "focus = on"
+        echo "manage = on"
+        echo "border = off"
+        echo "rectangle = 520x292+5+$(($top_padding+5))"
+        ;;
+esac
+
+case $title in
+    lstopo|"Media viewer"|"Network Settings "*)
+        #echo "state = fullscreen"
+        #echo "center = on"
+        #echo "desktop = ^4"
+        echo "follow = on"
+        ;;
+    'Picture in picture')
+        echo "state = floating"
+        echo "STICKY = off"
+        echo "focus = off"
+        echo "manage = on"
+        echo "border = off"
+        echo "rectangle = 570x321+5+$(($top_padding+5))"
+        ;;
+esac
+

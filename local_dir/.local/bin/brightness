@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+#adjust backlight up/down
+
+# brightness command
+cmd=brightnessctl
+
+# brightness in %
+current_bl=$($cmd -m | awk -F '[,%]' '{printf $4}')
+up="$(($current_bl+5))"
+down="$(($current_bl-5))"
+
+case $1 in
+  up)
+    [[ $current_bl = 100 ]] && exit
+    (("$up" >= "100")) &&
+      $cmd set 100% ||
+      $cmd set ${up}%
+    ;;
+  down)
+    (($current_bl <= 5)) && $cmd set 30 && exit ||
+    #(("$down" <= "5")) &&
+      #$cmd set 5% ||
+      $cmd set ${down}%
+    ;;
+  *)
+    echo "Usage: brightness [up/down]"
+    ;;
+esac
