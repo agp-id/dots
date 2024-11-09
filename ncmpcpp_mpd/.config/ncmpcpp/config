@@ -5,7 +5,7 @@ mpd_port = "6600"
 mpd_crossfade_time = "6"
 
 [visualizer]
-visualizer_fifo_path = "/tmp/mpd.fifo"
+#visualizer_fifo_path = "/tmp/mpd.fifo"
 visualizer_in_stereo = "no"
 visualizer_type = "spectrum"
 visualizer_output_name = "my_fifo"
